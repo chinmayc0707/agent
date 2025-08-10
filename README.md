@@ -1,130 +1,83 @@
-# AI File System Agent
+# AI File System Agent (with LLM)
 
-This project is a simple command-line based AI agent that can perform common file system operations. It provides a clean interface for creating, moving, deleting, and exploring files and directories.
+This project is an intelligent AI agent that understands natural language and performs common file system operations on your behalf. It is powered by a Large Language Model (LLM) to interpret your commands.
 
 ## Features
 
-- Create files (with or without content)
-- Create directories
-- Move files and directories
-- Delete files and directories
-- List the contents of a directory
-- Read the contents of a file
+- **Natural Language Interface:** Simply tell the agent what you want to do in plain English.
+- **Core File Operations:** Supports creating, moving, deleting, and exploring files and directories.
+- **LLM-Powered:** Uses Google Gemini to translate your prompts into executable commands.
+- **Safe & Testable:** Includes a mock LLM for safe, offline testing and a validation layer for commands.
 
 ## Setup
 
-This project is written in Python and has no external dependencies. You only need a Python 3.x environment to run it.
+This project is written in Python and requires a few dependencies.
+
+1.  **Clone the repository** (if you haven't already).
+
+2.  **Install dependencies** from `requirements.txt`:
+    ```bash
+    pip install -r requirements.txt
+    ```
 
 ## Usage
 
-The agent is controlled via the `main.py` script. You can see a list of all available commands by running:
+The agent is controlled via the `main.py` script. You provide your command as a single string prompt.
 
-```bash
-python main.py --help
-```
+### Using the Mock LLM (Default)
 
-### Commands
-
-Here are the available commands and how to use them:
-
-**1. `create-file`**
-
-Creates a new file.
+By default, the agent uses a mock LLM that only understands a few predefined prompts. This is useful for testing the application without an internet connection or an API key.
 
 *Usage:*
 ```bash
-python main.py create-file <path> [content]
+python main.py "<your prompt>"
 ```
 
-*Example:*
+*Examples:*
 ```bash
 # Create an empty file
-python main.py create-file my_new_file.txt
+python main.py "create a file called mock.txt"
 
 # Create a file with content
-python main.py create-file another_file.txt "This is some content."
+python main.py "create a file called hello.txt with content 'hello world'"
+
+# Create a directory
+python main.py "create a directory named my_mock_dir"
 ```
 
-**2. `create-dir`**
+### Using the Real Google Gemini LLM
 
-Creates a new directory.
+To use the real Gemini LLM, you need to have a Google API key.
+
+1.  **Get an API Key:** Obtain an API key from Google AI Studio.
+
+2.  **Set Environment Variable:** Set your API key as an environment variable named `GOOGLE_API_KEY`.
+    ```bash
+    export GOOGLE_API_KEY="your_api_key_here"
+    ```
+
+3.  **Run the Agent:** Use the `--use-real-llm` flag when running the agent.
 
 *Usage:*
 ```bash
-python main.py create-dir <path>
+python main.py "<your prompt>" --use-real-llm
 ```
 
-*Example:*
+*Examples:*
 ```bash
-python main.py create-dir my_new_folder
-```
+# Use your imagination!
+python main.py "make a new text file for me called notes and put 'buy milk' in it" --use-real-llm
 
-**3. `move`**
+python main.py "show me what's in the src folder" --use-real-llm
 
-Moves a file or directory.
-
-*Usage:*
-```bash
-python main.py move <source> <destination>
-```
-
-*Example:*
-```bash
-# Move a file into a directory
-python main.py move my_new_file.txt my_new_folder/
-
-# Rename a file
-python main.py move another_file.txt renamed_file.txt
-```
-
-**4. `delete`**
-
-Deletes a file or directory. This is a permanent action.
-
-*Usage:*
-```bash
-python main.py delete <path>
-```
-
-*Example:*
-```bash
-python main.py delete renamed_file.txt
-python main.py delete my_new_folder
-```
-
-**5. `ls`**
-
-Lists the contents of a directory. If no path is provided, it lists the contents of the current directory.
-
-*Usage:*
-```bash
-python main.py ls [path]
-```
-
-*Example:*
-```bash
-python main.py ls
-python main.py ls src/
-```
-
-**6. `cat`**
-
-Reads and prints the content of a file.
-
-*Usage:*
-```bash
-python main.py cat <path>
-```
-
-*Example:*
-```bash
-python main.py cat src/file_system_manager.py
+python main.py "rename the file notes to shopping_list" --use-real-llm
 ```
 
 ## Running Tests
 
-The project includes a suite of unit tests to ensure the core logic is working correctly. To run the tests, use the following command from the project's root directory:
+The project includes a suite of unit and integration tests to ensure the core logic is working correctly. To run all the tests, use the following command from the project's root directory:
 
 ```bash
 python -m unittest discover tests
 ```
+This will run both the original tests for the file system manager and the new integration tests for the LLM functionality.
